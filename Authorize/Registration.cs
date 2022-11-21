@@ -9,8 +9,9 @@ namespace Authorize
 {
     internal class Registration
     {
+        Authorization authorization = new();
         private string _way = @"C:\Users\Студент 3\Desktop\Users.txt";
-        private void SetLogin()
+        private string SetLogin()
         {
             string login;
             while (true)
@@ -30,6 +31,7 @@ namespace Authorize
             {
                 writer.Write ($"{login} ");
             }
+            return login;
         }
         private bool LoginIsBusy(string login)
         {
@@ -76,7 +78,7 @@ namespace Authorize
                 return true;
             }
         }
-        private void SetPassword()
+        private string SetPassword()
         {
             string password;
             while (true)
@@ -89,6 +91,7 @@ namespace Authorize
                     if (check2 == true) { break; }
             }
             using (StreamWriter writer = new StreamWriter(_way, true)) { writer.WriteLine(password); }
+            return password;
         }     
         private bool CheckPassword(string password)
         {
@@ -114,8 +117,9 @@ namespace Authorize
         }
         public void UserRegistration()
         {
-            SetLogin();
-            SetPassword();
+            string login= SetLogin();
+            string password= SetPassword();
+            Authorization._authorization.Add(login, password);
         }
     }
 }

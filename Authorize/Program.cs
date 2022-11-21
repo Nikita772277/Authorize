@@ -26,6 +26,10 @@ void GetMenu()
             authorization.UserAuthorization();
             Console.WriteLine($"Вы вошли в систему");
         }
+        else if(result == 3)
+        {
+            authorization.Get();
+        }
         else
         {
             Console.WriteLine($"Выберите пункт из меню");

@@ -9,7 +9,24 @@ namespace Authorize
 {
     internal class Authorization
     {
+        public static Dictionary<string, string> _authorization;
+        public Authorization()
+        {
+            _authorization = new Dictionary<string, string>();
+        }
         private string _way= @"C:\Users\Студент 3\Desktop\Users.txt";
+        public void Get()
+        {
+            foreach (var key in _authorization.Keys)
+            {
+                Console.Write($"{key} - " );
+                foreach (var value in _authorization[key])
+                {
+                    Console.Write(value);
+                }
+                Console.WriteLine();
+            }
+        }
         private void SetLogin()
         {
             while (true)
