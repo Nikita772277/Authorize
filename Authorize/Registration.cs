@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -9,7 +10,6 @@ namespace Authorize
 {
     internal class Registration
     {
-        Authorization authorization = new();
         private string _way = @"C:\Users\Студент 3\Desktop\Users.txt";
         private string SetLogin()
         {
@@ -35,12 +35,11 @@ namespace Authorize
         }
         private bool LoginIsBusy(string login)
         {
-            using (StreamReader reader = new StreamReader(_way))
+            using (StreamReader reader = new(_way))
             {
                 string? line;
                 while ((line = reader.ReadLine()) != null)
-                {
-                    
+                {                    
                     if (login == line)
                     {
                         Console.WriteLine($"Логин занят");
@@ -51,9 +50,9 @@ namespace Authorize
                     {
                         return true;
                     }
-                }
-                return false;
+                }               
             }
+            return false;
         }
         private bool CheckLogin(string login)
         {
@@ -117,6 +116,11 @@ namespace Authorize
         }
         public void UserRegistration()
         {
+            FileInfo fileInfo = new FileInfo(_way);
+            if (!fileInfo.Exists)
+            {
+                File.Create(_way);
+            }
             string login= SetLogin();
             string password= SetPassword();
             Authorization._authorization.Add(login, password);
