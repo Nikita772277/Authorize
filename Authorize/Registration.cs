@@ -38,7 +38,7 @@ namespace Authorize
                 string? line;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    Parse()//Доделать дома
+                    
                     if (login == line)
                     {
                         Console.WriteLine($"Логин занят");
