@@ -10,6 +10,7 @@ namespace Authorize
     internal class Authorization
     {
         public static Dictionary<string, string> _authorization;
+        private string _login;
         public Authorization()
         {
             _authorization = new Dictionary<string, string>();
@@ -27,82 +28,94 @@ namespace Authorize
                 Console.WriteLine();
             }
         }
-        private void SetLogin()
+        private bool SetLogin()
         {
-            while (true)
+            for (int i = 3; i > 0; i--)
             {
                 Console.WriteLine($"Введите логин");
                 string login = Console.ReadLine();
                 bool a = CheckLogin(login);
                 if (a == true)
                 {
+                    _login = login;
+                    return true;
                     break;
                 }
-            }
-        }
-        private bool CheckLogin(string login)
-        {
-            using(StreamReader reader=new StreamReader(_way))
-            {
-                string? line;
-                while ((line = reader.ReadLine()) != null)
+                else
                 {
-                    if(login == line) 
-                    {
-                        return true;
-                    }
-                    else 
-                    {
-                                             
-                    }
-                }
-                if(line == null)
-                {
-                    Console.WriteLine($"Логин не найден");
+                    Console.WriteLine($"логин введён неверно осталось попыток - {i}");
+                    Console.WriteLine();                    
                 }
             }
             return false;
         }
-        private void SetPassword()
+        private bool CheckLogin(string login)
         {
-            while (true)
+            bool verifiedpassword = _authorization.ContainsKey(login);
+            if(verifiedpassword == true)
+            {
+                return true;
+            }
+            return false;
+        }
+        private bool SetPassword()
+        {
+            for (int i = 3; i > 0; i--)
             {
                 Console.WriteLine($"Введите пароль");
                 string password = Console.ReadLine();
                 bool a = CheckPassword(password);
                 if (a == true)
                 {
+                    return true;
                     break;
                 }
-            }
-        }
-        private bool CheckPassword(string password)
-        {
-            using (StreamReader reader = new StreamReader(_way))
-            {
-                string? line;
-                while ((line = reader.ReadLine()) != null)
+                else
                 {
-                    if (password == line)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                                          
-                    }
-                }
-                if (line == null)
-                {
-                    Console.WriteLine($"Пароль не найден");
+                    Console.WriteLine($"Пароль введён неверно осталось попыток - {i}");
+                    Console.WriteLine();
                 }
             }
             return false;
         }
+        private bool CheckPassword(string password)
+        {
+            bool verifiedkey = _authorization.TryGetValue(_login, out var foundelement);
+            try
+            {
+                var verifiedvalue = foundelement.Contains(password);
+                if (verifiedvalue == true)
+                {
+                    return true;
+                }
+                else { return false; }
+            }
+            catch
+            {
+                Console.WriteLine($"Ошибка");
+                return false;
+            }      
+            return false;
+        }
         public void UserAuthorization()
         {
-            SetLogin();
-            SetPassword();
+            bool check= SetLogin();
+            if (check == true) 
+            {
+                bool check2= SetPassword();
+                if(check2 == true)
+                {
+                    Console.WriteLine($"Вы вошли в систему");
+                }
+                else
+                {
+                    Console.WriteLine($"Пароль не подходит попробуйте снова позже");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Логин не подходит попробуйте снова позже");
+            }
         }
     }
 }

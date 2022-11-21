@@ -23,8 +23,7 @@ void GetMenu()
         }
         else if (result == 2)
         {
-            authorization.UserAuthorization();
-            Console.WriteLine($"Вы вошли в систему");
+            authorization.UserAuthorization();            
         }
         else if(result == 3)
         {
