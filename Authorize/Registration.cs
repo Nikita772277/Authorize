@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
@@ -37,7 +38,7 @@ namespace Authorize
             }
             using (StreamWriter writer = new StreamWriter(_way, true))
             {
-                writer.Write ($"Логин - {login} ");
+                writer.Write ($"{login} ");
             }
             return login;
         }
@@ -48,7 +49,8 @@ namespace Authorize
                 string? line;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    if (login == line)
+                    var check= line.Split(' ');
+                    if (login == check[0])
                     {
                         Console.WriteLine($"Логин занят");
                         Console.WriteLine();
@@ -90,27 +92,40 @@ namespace Authorize
             string password;
             while (true)
             {
-                Console.WriteLine($"В пароле должно быть минимум 8 символов");
+                Console.WriteLine($"В пароле должно состоять минимум из 8 символов 2 из которых знаки препинания либо любые другие и одной заглавной буквы");
                 Console.WriteLine();
                 Console.WriteLine($"Введите пароль");                
                 password = Console.ReadLine();
                     bool check2 = CheckPassword(password);
                     if (check2 == true) { break; }
             }
-            using (StreamWriter writer = new StreamWriter(_way, true)) { writer.Write($"Пароль - {password} "); }
+            using (StreamWriter writer = new StreamWriter(_way, true)) { writer.Write($"{password} "); }
             return password;
         }     
         private bool CheckPassword(string password)
         {
-            int number = 0;
+            bool a=false;
+            bool check=false;
+            int numberchar = 0;
+            int numbersymbol = 0;
             foreach (var pair in password)
             {
+                if (char.IsSymbol(pair)==true|| char.IsPunctuation(pair)==true)
+                {
+                    numbersymbol++;
+                    if (numbersymbol >= 2)
+                    {
+                        check = true;
+                    }
+                }
+                if (char.IsUpper(pair) == true) 
+                    a=true;
                 if (pair != ' ')
                 {
-                    number++;
+                    numberchar++;
                 }
             }
-            if (number < 8)
+            if (numberchar < 8||a!=true||check!=true)
             {
                 Console.WriteLine($"Пароль не валиден");
                 Console.WriteLine();
@@ -127,10 +142,13 @@ namespace Authorize
             while (true)
             {
                 Console.WriteLine($"Введите ваш номер телефона");
+                Console.WriteLine();
+                Console.WriteLine($"Пример ввода 81234567890");
                 string number = Console.ReadLine();
                 bool check = CheckNumber(number);
                 if (check == true)
                 {
+                    using (StreamWriter writer = new StreamWriter(_way, true)) { writer.WriteLine($" {number}"); }
                     return number;
                     break;
                 }
@@ -146,16 +164,34 @@ namespace Authorize
         {
             Regex regex = new(@"^+7\d{10}$");
             Regex regex2 = new(@"^8 [0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}$");
-            var a= regex.IsMatch(number);
-            var b= regex2.IsMatch(number);
-            if(a== true || b == true)
+            Regex regex3 = new(@"^8\d{10}");
+            var r= regex.IsMatch(number);
+            var r2= regex2.IsMatch(number);
+            var r3= regex3.IsMatch(number);
+            if(r== true || r2 == true||r3==true)
             {
                 Console.WriteLine($"Номер подходит");
                 return true;
             }
-            else { Console.WriteLine($"Не подходит"); return false; }            
+            else { return false; }            
             return false;
         }
+        public async void DataFile()
+        {
+            using (StreamReader reader = new StreamReader(_way))
+            {
+                string? line;
+                while ((line = await reader.ReadLineAsync()) != null)
+                {
+                    var data= line.Split(' ');
+                    if (data.Length > 1)
+                    {
+                        Authorization._authorization.Add(data[0], data[1]);
+                    }
+                }
+
+            }
+        }//возможно сломал
         public void UserRegistration()
         {
             FileInfo fileInfo = new FileInfo(_way);

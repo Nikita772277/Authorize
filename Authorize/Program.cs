@@ -12,6 +12,7 @@ void Menu()
 void GetMenu()
 {
     registration.SetWay();
+    registration.DataFile();
     while (true)
     {
         Menu();
