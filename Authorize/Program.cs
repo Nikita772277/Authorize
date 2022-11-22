@@ -25,9 +25,9 @@ void GetMenu()
         }
         else if (result == 2)
         {
-            authorization.UserAuthorization();            
+            authorization.UserAuthorization();
         }
-        else if(result == 3)
+        else if (result == 3)
         {
             authorization.Get();
         }

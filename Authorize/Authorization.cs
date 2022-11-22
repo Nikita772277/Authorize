@@ -14,12 +14,12 @@ namespace Authorize
         public Authorization()
         {
             _authorization = new Dictionary<string, string>();
-        }        
+        }
         public void Get()
         {
             foreach (var key in _authorization.Keys)
             {
-                Console.Write($"{key} - " );
+                Console.Write($"{key} - ");
                 foreach (var value in _authorization[key])
                 {
                     Console.Write(value);
@@ -43,7 +43,7 @@ namespace Authorize
                 else
                 {
                     Console.WriteLine($"логин введён неверно осталось попыток - {i}");
-                    Console.WriteLine();                    
+                    Console.WriteLine();
                 }
             }
             return false;
@@ -51,7 +51,7 @@ namespace Authorize
         private bool CheckLogin(string login)
         {
             bool verifiedpassword = _authorization.ContainsKey(login);
-            if(verifiedpassword == true)
+            if (verifiedpassword == true)
             {
                 return true;
             }
@@ -93,16 +93,16 @@ namespace Authorize
             {
                 Console.WriteLine($"Ошибка");
                 return false;
-            }      
+            }
             return false;
         }
         public void UserAuthorization()
         {
-            bool check= SetLogin();
-            if (check == true) 
+            bool check = SetLogin();
+            if (check == true)
             {
-                bool check2= SetPassword();
-                if(check2 == true)
+                bool check2 = SetPassword();
+                if (check2 == true)
                 {
                     Console.WriteLine($"Вы вошли в систему");
                 }

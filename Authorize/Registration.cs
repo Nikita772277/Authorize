@@ -38,7 +38,7 @@ namespace Authorize
             }
             using (StreamWriter writer = new StreamWriter(_way, true))
             {
-                writer.Write ($"{login} ");
+                writer.Write($"{login} ");
             }
             return login;
         }
@@ -49,7 +49,7 @@ namespace Authorize
                 string? line;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    var check= line.Split(' ');
+                    var check = line.Split(' ');
                     if (login == check[0])
                     {
                         Console.WriteLine($"Логин занят");
@@ -94,23 +94,23 @@ namespace Authorize
             {
                 Console.WriteLine($"В пароле должно состоять минимум из 8 символов 2 из которых знаки препинания либо любые другие и одной заглавной буквы");
                 Console.WriteLine();
-                Console.WriteLine($"Введите пароль");                
+                Console.WriteLine($"Введите пароль");
                 password = Console.ReadLine();
-                    bool check2 = CheckPassword(password);
-                    if (check2 == true) { break; }
+                bool check2 = CheckPassword(password);
+                if (check2 == true) { break; }
             }
             using (StreamWriter writer = new StreamWriter(_way, true)) { writer.Write($"{password} "); }
             return password;
-        }     
+        }
         private bool CheckPassword(string password)
         {
-            bool a=false;
-            bool check=false;
+            bool a = false;
+            bool check = false;
             int numberchar = 0;
             int numbersymbol = 0;
             foreach (var pair in password)
             {
-                if (char.IsSymbol(pair)==true|| char.IsPunctuation(pair)==true)
+                if (char.IsSymbol(pair) == true || char.IsPunctuation(pair) == true)
                 {
                     numbersymbol++;
                     if (numbersymbol >= 2)
@@ -118,14 +118,14 @@ namespace Authorize
                         check = true;
                     }
                 }
-                if (char.IsUpper(pair) == true) 
-                    a=true;
+                if (char.IsUpper(pair) == true)
+                    a = true;
                 if (pair != ' ')
                 {
                     numberchar++;
                 }
             }
-            if (numberchar < 8||a!=true||check!=true)
+            if (numberchar < 8 || a != true || check != true)
             {
                 Console.WriteLine($"Пароль не валиден");
                 Console.WriteLine();
@@ -165,15 +165,15 @@ namespace Authorize
             Regex regex = new(@"^+7\d{10}$");
             Regex regex2 = new(@"^8 [0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}$");
             Regex regex3 = new(@"^8\d{10}");
-            var r= regex.IsMatch(number);
-            var r2= regex2.IsMatch(number);
-            var r3= regex3.IsMatch(number);
-            if(r== true || r2 == true||r3==true)
+            var r = regex.IsMatch(number);
+            var r2 = regex2.IsMatch(number);
+            var r3 = regex3.IsMatch(number);
+            if (r == true || r2 == true || r3 == true)
             {
                 Console.WriteLine($"Номер подходит");
                 return true;
             }
-            else { return false; }            
+            else { return false; }
             return false;
         }
         public async void DataFile()
@@ -183,7 +183,7 @@ namespace Authorize
                 string? line;
                 while ((line = await reader.ReadLineAsync()) != null)
                 {
-                    var data= line.Split(' ');
+                    var data = line.Split(' ');
                     if (data.Length > 1)
                     {
                         Authorization._authorization.Add(data[0], data[1]);
@@ -191,7 +191,7 @@ namespace Authorize
                 }
 
             }
-        }//возможно сломал
+        }
         public void UserRegistration()
         {
             FileInfo fileInfo = new FileInfo(_way);
@@ -199,8 +199,8 @@ namespace Authorize
             {
                 using (File.Create(_way)) ;
             }
-            string login= SetLogin();
-            string password= SetPassword();
+            string login = SetLogin();
+            string password = SetPassword();
             Setnumber();
             Console.WriteLine();
             Console.WriteLine($"Вы успешно зарегистрировались");
