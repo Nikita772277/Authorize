@@ -11,6 +11,7 @@ void Menu()
 }
 void GetMenu()
 {
+    registration.SetWay();
     while (true)
     {
         Menu();

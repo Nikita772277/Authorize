@@ -14,8 +14,7 @@ namespace Authorize
         public Authorization()
         {
             _authorization = new Dictionary<string, string>();
-        }
-        private string _way= @"C:\Users\Студент 3\Desktop\Users.txt";
+        }        
         public void Get()
         {
             foreach (var key in _authorization.Keys)

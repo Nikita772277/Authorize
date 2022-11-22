@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Authorize
@@ -11,6 +13,12 @@ namespace Authorize
     internal class Registration
     {
         private string _way = @"C:\Users\Студент 3\Desktop\Users.txt";
+        public void SetWay()
+        {
+            Console.WriteLine($"Введите имя пользователя windows");
+            string path = Console.ReadLine();
+            _way = $@"C:\Users\{path}\Desktop\Users.txt";
+        }
         private string SetLogin()
         {
             string login;
@@ -29,7 +37,7 @@ namespace Authorize
             }
             using (StreamWriter writer = new StreamWriter(_way, true))
             {
-                writer.Write ($"{login} ");
+                writer.Write ($"Логин - {login} ");
             }
             return login;
         }
@@ -39,7 +47,7 @@ namespace Authorize
             {
                 string? line;
                 while ((line = reader.ReadLine()) != null)
-                {                    
+                {
                     if (login == line)
                     {
                         Console.WriteLine($"Логин занят");
@@ -50,7 +58,7 @@ namespace Authorize
                     {
                         return true;
                     }
-                }               
+                }
             }
             return false;
         }
@@ -89,7 +97,7 @@ namespace Authorize
                     bool check2 = CheckPassword(password);
                     if (check2 == true) { break; }
             }
-            using (StreamWriter writer = new StreamWriter(_way, true)) { writer.WriteLine(password); }
+            using (StreamWriter writer = new StreamWriter(_way, true)) { writer.Write($"Пароль - {password} "); }
             return password;
         }     
         private bool CheckPassword(string password)
@@ -114,15 +122,53 @@ namespace Authorize
                 return true;
             }
         }
+        private string Setnumber()
+        {
+            while (true)
+            {
+                Console.WriteLine($"Введите ваш номер телефона");
+                string number = Console.ReadLine();
+                bool check = CheckNumber(number);
+                if (check == true)
+                {
+                    return number;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine($"Вы ввели не подходяший условиям номер");
+                    Console.WriteLine();
+                }
+            }
+            return "";
+        }
+        private bool CheckNumber(string number)
+        {
+            Regex regex = new(@"^+7\d{10}$");
+            Regex regex2 = new(@"^8 [0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}$");
+            var a= regex.IsMatch(number);
+            var b= regex2.IsMatch(number);
+            if(a== true || b == true)
+            {
+                Console.WriteLine($"Номер подходит");
+                return true;
+            }
+            else { Console.WriteLine($"Не подходит"); return false; }            
+            return false;
+        }
         public void UserRegistration()
         {
             FileInfo fileInfo = new FileInfo(_way);
             if (!fileInfo.Exists)
             {
-                File.Create(_way);
+                using (File.Create(_way)) ;
             }
             string login= SetLogin();
             string password= SetPassword();
+            Setnumber();
+            Console.WriteLine();
+            Console.WriteLine($"Вы успешно зарегистрировались");
+            Console.WriteLine();
             Authorization._authorization.Add(login, password);
         }
     }
