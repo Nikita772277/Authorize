@@ -19,6 +19,7 @@ namespace Authorize
             Console.WriteLine($"Введите имя пользователя windows");
             string path = Console.ReadLine();
             _way = $@"C:\Users\{path}\Desktop\Users.txt";
+            CreateFile();
         }
         private string SetLogin()
         {
@@ -192,13 +193,16 @@ namespace Authorize
 
             }
         }
-        public void UserRegistration()
+        public void CreateFile()
         {
             FileInfo fileInfo = new FileInfo(_way);
             if (!fileInfo.Exists)
             {
                 using (File.Create(_way)) ;
             }
+        }
+        public void UserRegistration()
+        {
             string login = SetLogin();
             string password = SetPassword();
             Setnumber();
