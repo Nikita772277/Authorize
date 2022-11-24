@@ -48,8 +48,9 @@ namespace Authorize
             using (StreamReader reader = new(_way))
             {
                 string? line;
-                while ((line = reader.ReadLine()) != null)
+                while (reader.ReadLine() != null)
                 {
+                    line = reader.ReadLine();
                     var check = line.Split(' ');
                     if (login == check[0])
                     {
@@ -60,6 +61,18 @@ namespace Authorize
                     else
                     {
                         return true;
+                    }
+                }
+                while (reader.ReadLine() == null)
+                {
+                    line = reader.ReadLine();
+                    if (login.Length >= 4)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
                     }
                 }
             }
@@ -199,6 +212,7 @@ namespace Authorize
             if (!fileInfo.Exists)
             {
                 using (File.Create(_way)) ;
+                Console.WriteLine($"Файл создан");
             }
         }
         public void UserRegistration()

@@ -22,14 +22,17 @@ void GetMenu()
         if (result == 1)
         {
             registration.UserRegistration();
+            return;
         }
         else if (result == 2)
         {
             authorization.UserAuthorization();
+            return;
         }
         else if (result == 3)
         {
             authorization.Get();
+            return;
         }
         else
         {
